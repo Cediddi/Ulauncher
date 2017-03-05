@@ -8,7 +8,7 @@ class ActionList(list):
         if not self:
             return True
         else:
-            return any(map(lambda i: i.keep_app_open(), self))
+            return any([i.keep_app_open() for i in self])
 
     def run_all(self):
-        map(lambda i: i.run(), self)
+        list(map(lambda i: i.run(), self))

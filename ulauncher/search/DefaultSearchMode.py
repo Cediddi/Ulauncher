@@ -24,8 +24,9 @@ class DefaultSearchMode(SearchMode):
 
             if not len(result_list) and query:
                 # default search
-                default_items = filter(lambda i: i.is_default_search, shortcut_items)
-                map(lambda i: i.activate_default_search(True), shortcut_items)
+                default_items = [i for i in shortcut_items if i.is_default_search]
+                for item in shortcut_items:
+                    item.activate_default_search(True)
                 result_list = default_items
 
         return ActionList((RenderResultListAction(result_list),))

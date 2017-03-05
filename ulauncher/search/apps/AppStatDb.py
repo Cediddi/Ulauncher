@@ -2,7 +2,7 @@ import os
 from operator import itemgetter
 from itertools import islice
 
-from ulauncher.helpers import singleton, force_unicode
+from ulauncher.helpers import singleton
 from ulauncher.utils.KeyValueDb import KeyValueDb
 from ulauncher.config import CACHE_DIR
 
@@ -39,7 +39,7 @@ class AppStatDb(KeyValueDb):
         return [AppResultItem(i) for i in islice(
                 filter(None,
                        map(lambda r: app_db.get_by_path(r[0]),
-                           sorted(self._records.iteritems(),
+                           sorted(self._records.items(),
                                   key=itemgetter(1),
                                   reverse=True))),
                 0, limit)]

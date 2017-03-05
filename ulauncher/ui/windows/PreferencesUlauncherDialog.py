@@ -4,9 +4,9 @@ import json
 
 from gi.repository import Gio, Gtk, WebKit2
 from locale import gettext as _
-from urllib import unquote
+from urllib.parse import unquote
 
-from ulauncher.helpers import parse_options, force_unicode
+from ulauncher.helpers import parse_options
 from ulauncher.utils.AutostartPreference import AutostartPreference
 from ulauncher.utils.Settings import Settings
 from ulauncher.ui.AppIndicator import AppIndicator
@@ -140,7 +140,7 @@ class PreferencesUlauncherDialog(Gtk.Dialog, WindowHelper):
             callback_name = params['query']['callback']
             assert callback_name
         except Exception as e:
-            logger.exception('API call failed. %s: %s' % (type(e).__name__, e.message))
+            logger.exception('API call failed. %s: %s' % (type(e).__name__, e.args[0]))
             return
 
         try:
@@ -149,16 +149,17 @@ class PreferencesUlauncherDialog(Gtk.Dialog, WindowHelper):
         except PrefsApiError as e:
             callback = '%s(null, %s);' % (callback_name, json.dumps(e))
         except Exception as e:
-            message = 'Unexpected API error. %s: %s' % (type(e).__name__, e.message)
+            message = 'Unexpected API error. %s: %s' % (type(e).__name__, e.args[0])
             callback = '%s(null, %s);' % (callback_name, json.dumps(message))
             logger.exception(message)
 
         try:
-            stream = Gio.MemoryInputStream.new_from_data(callback)
+            stream = Gio.MemoryInputStream.new_from_data(bytes(callback, 'utf8'))
             # send response
             schemeRequest.finish(stream, -1, 'text/javascript')
         except Exception as e:
-            logger.exception('Unexpected API error. %s: %s' % (type(e).__name__, e.message))
+            logger.exception('Unexpected API error. %s: %s' % (type(e).__name__, e.args[0]))
+            raise
 
     def send_webview_notification(self, name, data):
         self.webview.run_javascript('onNotification("%s", %s)' % (name, json.dumps(data)))
@@ -285,9 +286,9 @@ class PreferencesUlauncherDialog(Gtk.Dialog, WindowHelper):
         req_data = url_params['query']
         logger.info('Add/Update shortcut: %s' % json.dumps(req_data))
         shortcuts = ShortcutsDb.get_instance()
-        id = shortcuts.put_shortcut(force_unicode(req_data['name']),
-                                    force_unicode(req_data['keyword']),
-                                    force_unicode(req_data['cmd']),
+        id = shortcuts.put_shortcut(req_data['name'],
+                                    req_data['keyword'],
+                                    req_data['cmd'],
                                     req_data['icon'],
                                     req_data['is_default_search'],
                                     req_data.get('id'))

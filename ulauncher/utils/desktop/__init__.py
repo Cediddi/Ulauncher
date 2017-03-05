@@ -1,6 +1,7 @@
 import os
 import logging
 from itertools import chain
+from functools import partial
 from gi.repository import Gio
 
 from ulauncher.helpers import find_files
@@ -15,7 +16,7 @@ def find_desktop_files(dirs=DESKTOP_DIRS):
     :return list:
     """
     return chain.from_iterable(
-        map(lambda f: os.path.join(f_path, f), find_files(f_path, '*.desktop')) for f_path in dirs)
+        map(partial(os.path.join, f_path), find_files(f_path, '*.desktop')) for f_path in dirs)
 
 
 def filter_app(app):
@@ -44,4 +45,4 @@ def find_apps(dirs=DESKTOP_DIRS):
     :param list dirs: list of paths to *.desktop files
     :return list: list of Gio.DesktopAppInfo objects
     """
-    return filter(filter_app, map(read_desktop_file, find_desktop_files(dirs)))
+    return list(filter(filter_app, list(map(read_desktop_file, find_desktop_files(dirs)))))

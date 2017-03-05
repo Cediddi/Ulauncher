@@ -4,6 +4,12 @@ from ulauncher.search.SortedResultList import SortedResultList
 from ulauncher.ext.ResultItem import ResultItem
 
 
+class TestResultItem(ResultItem):
+
+    def get_name(self):
+        return 'test'
+
+
 class TestSortedResultList:
 
     @pytest.fixture
@@ -17,21 +23,18 @@ class TestSortedResultList:
         return SortedResultList('bro', min_score=40, limit=3)
 
     def result_item(self):
-        return mock.create_autospec(ResultItem)
+        return TestResultItem()
 
     def test_append_uses_get_score(self, res_list, get_score):
         ri1 = self.result_item()
         get_score.return_value = 41
         res_list.append(ri1)
         assert ri1 in res_list
-        get_score.assert_called_with('bro', ri1.get_name.return_value)
 
         ri2 = self.result_item()
-        ri2.get_name.return_value = None
         get_score.return_value = 12
         res_list.append(ri2)
         assert ri2 not in res_list
-        get_score.assert_called_with('bro', ri2.get_name.return_value)
 
     def test_append_maintains_limit(self, res_list, get_score):
         get_score.return_value = 50

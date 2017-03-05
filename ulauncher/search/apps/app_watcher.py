@@ -132,7 +132,7 @@ def start():
     """
 
     db = AppDb.get_instance()
-    added_apps = map(lambda app: db.put_app(app), find_apps())
+    added_apps = [db.put_app(app) for app in find_apps()]
     logger.info('Finished scanning directories for desktop files. Indexed %s applications' % len(added_apps))
 
     wm = pyinotify.WatchManager()

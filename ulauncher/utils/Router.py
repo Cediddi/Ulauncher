@@ -1,5 +1,5 @@
 import re
-from urllib import unquote
+from urllib.parse import unquote
 
 RE_URL = re.compile(r'^(?P<scheme>.*)://(?P<path>[^\?]*)(\?(?P<query>.*))?$', flags=re.IGNORECASE)
 
@@ -8,7 +8,7 @@ def get_url_params(url):
     params = re.search(RE_URL, url)
     query = params.group('query')
     if query:
-        pairs = map(lambda kv: kv.split('='), query.split('&'))
+        pairs = [kv.split('=') for kv in query.split('&')]
         query = dict([(k, unquote(v)) for k, v in pairs])
     return {
         'scheme': params.group('scheme'),

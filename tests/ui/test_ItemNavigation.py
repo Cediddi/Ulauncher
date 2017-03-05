@@ -8,7 +8,7 @@ class TestItemNavigation(object):
 
     @pytest.fixture
     def items(self):
-        return map(lambda _: mock.create_autospec(ResultItemWidget), range(5))
+        return [mock.create_autospec(ResultItemWidget) for _ in range(5)]
 
     @pytest.fixture
     def nav(self, items):
@@ -66,7 +66,8 @@ class TestItemNavigation(object):
 
     def test_select_default(self, nav, items, mocker):
         select = mocker.patch.object(nav, 'select')
-        map(lambda i: setattr(i.selected_by_default, 'return_value', False), items)
+        for i in items:
+            i.selected_by_default.return_value = False
         items[3].selected_by_default.return_value = True
         nav.select_default('q')
         select.assert_called_with(3)

@@ -1,5 +1,15 @@
 import pytest
-from ulauncher.search.calc.CalcMode import CalcMode
+from ulauncher.search.calc.CalcMode import CalcMode, eval_expr
+
+
+class TestEvalExpr:
+
+    def test_eval_expr__returns_correct_val(self):
+        assert eval_expr('1+1') == 2
+
+    def test_eval_expr__raises_SyntaxError(self):
+        with pytest.raises(SyntaxError):
+            assert eval_expr('1-+')
 
 
 class TestCalcMode:

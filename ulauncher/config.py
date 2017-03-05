@@ -17,11 +17,11 @@ from xdg.BaseDirectory import xdg_config_home, xdg_cache_home
 CACHE_DIR = os.path.join(xdg_cache_home, 'ulauncher_cache')
 CONFIG_DIR = os.path.join(xdg_config_home, 'ulauncher')
 SETTINGS_FILE_PATH = os.path.join(CONFIG_DIR, 'settings.json')
-DESKTOP_DIRS = filter(os.path.exists, map(os.path.expanduser, [
+DESKTOP_DIRS = list(filter(os.path.exists, map(os.path.expanduser, [
     '/usr/local/share/applications',
     '/usr/share/applications',
     '~/.local/share/applications'
-]))
+])))
 
 
 class ProjectPathNotFoundError(Exception):

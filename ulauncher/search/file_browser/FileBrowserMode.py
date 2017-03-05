@@ -39,7 +39,7 @@ class FileBrowserMode(SearchMode):
         return FileBrowserResultItem(Path(path_srt))
 
     def filter_dot_files(self, file_list):
-        return filter(lambda f: not f.startswith('.'), file_list)
+        return list(filter(lambda f: not f.startswith('.'), file_list))
 
     def on_key_press_event(self, widget, event, query):
         keyval = event.get_keyval()
@@ -65,19 +65,19 @@ class FileBrowserMode(SearchMode):
             existing_dir = path.get_existing_dir()
             if existing_dir == path.get_abs_path():
                 results = self.list_files(path.get_abs_path(), sort_by_usage=True)
-                result_items = map(self.create_result_item, map(lambda name: os.path.join(existing_dir, name),
-                                   self.filter_dot_files(results)[:self.RESULT_LIMIT]))
+                result_items = list(map(self.create_result_item, map(lambda name: os.path.join(existing_dir, name),
+                                        self.filter_dot_files(results)[:self.RESULT_LIMIT])))
             else:
                 results = self.list_files(existing_dir)
                 search_for = path.get_search_part()
                 if not search_for.startswith('.'):
                     # don't show dot files in the results
-                    results = map(lambda name: os.path.join(existing_dir, name), self.filter_dot_files(results))
+                    results = [os.path.join(existing_dir, name) for name in self.filter_dot_files(results)]
                 else:
-                    results = map(lambda name: os.path.join(existing_dir, name), results)
+                    results = [os.path.join(existing_dir, name) for name in results]
 
                 result_items = SortedResultList(search_for, min_score=40, limit=self.RESULT_LIMIT)
-                result_items.extend(map(self.create_result_item, reversed(results)))
+                result_items.extend([self.create_result_item(i) for i in reversed(results)])
         except (InvalidPathError, OSError):
             return ActionList((RenderResultListAction([]),))
 

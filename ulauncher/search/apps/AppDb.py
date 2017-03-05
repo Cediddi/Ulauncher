@@ -2,7 +2,7 @@ import os
 import sqlite3
 import logging
 
-from ulauncher.helpers import singleton, force_unicode
+from ulauncher.helpers import singleton
 from ulauncher.config import CACHE_DIR
 from ulauncher.utils.icon_loader import get_app_icon_pixbuf
 from .AppResultItem import AppResultItem
@@ -61,9 +61,9 @@ class AppDb(object):
         :param Gio.DesktopAppInfo app:
         """
         record = {
-            "desktop_file": force_unicode(app.get_filename()),
-            "name": force_unicode(app.get_string('X-GNOME-FullName') or app.get_name()),
-            "description": force_unicode(app.get_description() or ''),
+            "desktop_file": app.get_filename(),
+            "name": app.get_string('X-GNOME-FullName') or app.get_name(),
+            "description": app.get_description() or '',
         }
         self._icons[record['desktop_file']] = get_app_icon_pixbuf(app, AppResultItem.ICON_SIZE)
 
@@ -78,7 +78,7 @@ class AppDb(object):
     def get_by_name(self, name):
         try:
             query = 'SELECT * FROM app_db where name = ? COLLATE NOCASE'
-            collection = self._conn.execute(query, (force_unicode(name),))
+            collection = self._conn.execute(query, (name,))
         except Exception as e:
             logger.exception('Exception %s for query: %s. Name: %s' % (e, query, name))
 
@@ -89,7 +89,7 @@ class AppDb(object):
     def get_by_path(self, desktop_file):
         try:
             query = 'SELECT * FROM app_db where desktop_file = ?'
-            collection = self._conn.execute(query, (force_unicode(desktop_file),))
+            collection = self._conn.execute(query, (desktop_file,))
         except Exception as e:
             logger.exception('Exception %s for query: %s. Path: %s' % (e, query, desktop_file))
 
@@ -103,7 +103,7 @@ class AppDb(object):
         """
         try:
             query = 'DELETE FROM app_db WHERE desktop_file = ?'
-            self._conn.execute(query, (force_unicode(desktop_file),))
+            self._conn.execute(query, (desktop_file,))
             self.commit()
         except Exception as e:
             logger.exception('Exception %s for query: %s. Path: %s' % (e, query, desktop_file))
@@ -121,7 +121,7 @@ class AppDb(object):
         :return ResultList:
         """
 
-        result_list = result_list or SortedResultList(query, min_score=50, limit=9)
+        result_list = result_list or SortedResultList(query, min_score=60, limit=9)
 
         if not query:
             return result_list

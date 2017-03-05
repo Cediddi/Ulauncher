@@ -121,7 +121,7 @@ class Builder(Gtk.Builder):
         connection_dict = {}
         connection_dict.update(self.glade_handler_dict)
         connection_dict.update(callback_handler_dict)
-        for item in connection_dict.items():
+        for item in list(connection_dict.items()):
             if item[1] is None:
                 # the handler is missing so reroute to default_handler
                 handler = functools.partial(
@@ -259,7 +259,7 @@ def auto_connect_by_name(callback_obj, builder):
 
     callback_handler_dict = dict_from_callback_obj(callback_obj)
 
-    for item in builder.widgets.items():
+    for item in list(builder.widgets.items()):
         (widget_name, widget) = item
         signal_ids = []
         try:
@@ -312,7 +312,7 @@ def log_unconnected_functions(callback_handler_dict, connections):
 
     connected_functions = [x[2] for x in connections]
 
-    handler_names = callback_handler_dict.keys()
+    handler_names = list(callback_handler_dict.keys())
     unconnected = [x for x in handler_names if x.startswith('on_')]
 
     for handler_name in connected_functions:

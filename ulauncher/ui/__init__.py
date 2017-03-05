@@ -1,10 +1,10 @@
 import os
 import json
 from gi.repository import Gtk
+from functools import lru_cache
 from ulauncher.config import get_data_file
 from ulauncher.utils.fuzzy_search import get_matching_indexes
 from ulauncher.utils.Settings import Settings
-from ulauncher.utils.lru_cache import lru_cache
 
 
 def create_item(result_item, index, query):

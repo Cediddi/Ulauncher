@@ -1,5 +1,6 @@
 from threading import Thread
 from functools import wraps
+import collections
 
 
 def run_async(*args, **kwargs):
@@ -36,7 +37,7 @@ def run_async(*args, **kwargs):
 
         return async_func
 
-    if len(args) == 1 and not kwargs and callable(args[0]):
+    if len(args) == 1 and not kwargs and isinstance(args[0], collections.Callable):
         # No arguments, this is the decorator
         # Set default values for the arguments
         return _run_async(args[0])

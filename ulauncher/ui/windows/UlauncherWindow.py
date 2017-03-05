@@ -12,7 +12,7 @@ gi.require_version('Keybinder', '3.0')
 
 from gi.repository import Gtk, Gdk, GLib, Keybinder
 
-from ulauncher.helpers import singleton, force_unicode, gtk_version_is_gte
+from ulauncher.helpers import singleton, gtk_version_is_gte
 from ulauncher.utils.display import get_current_screen_geometry
 from ulauncher.config import get_data_file
 from ulauncher.ui import create_item_widgets, get_theme_name
@@ -263,7 +263,7 @@ class UlauncherWindow(Gtk.Window, WindowHelper):
 
     def get_user_query(self):
         # get_text() returns str, so we need to convert it to unicode
-        return Query(force_unicode(self.input.get_text()))
+        return Query(self.input.get_text())
 
     def select_result_item(self, index, onHover=False):
         if time.time() - self._resultsRenderTime > 0.1:
@@ -285,7 +285,8 @@ class UlauncherWindow(Gtk.Window, WindowHelper):
         results = list(create_item_widgets(result_items, self.get_user_query()))  # generator -> list
         if results:
             self._resultsRenderTime = time.time()
-            map(self.result_box.add, results)
+            for result in results:
+                self.result_box.add(result)
             self.results_nav = ItemNavigation(self.result_box.get_children())
             self.results_nav.select_default(self.get_user_query())
 

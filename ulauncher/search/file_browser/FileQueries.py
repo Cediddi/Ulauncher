@@ -7,8 +7,8 @@ from ulauncher.utils.run_async import run_async
 
 
 class FileQueries(KeyValueDb):
-    __last_put_time = None
-    __last_save_time = None
+    __last_put_time = 0
+    __last_save_time = 0
 
     @classmethod
     @singleton
@@ -36,3 +36,6 @@ class FileQueries(KeyValueDb):
     def put(self, path):
         self.__last_put_time = time()
         super(FileQueries, self).put(path, self.__last_put_time)
+
+    def find(self, path):
+        return super(FileQueries, self).find(path) or 0

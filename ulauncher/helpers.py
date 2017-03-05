@@ -9,9 +9,9 @@ from distutils.dir_util import mkpath
 from distutils.version import StrictVersion
 from locale import gettext as _
 from gi.repository import Gtk, GdkPixbuf
+from functools import lru_cache
 
 from .config import get_data_file, get_version, CACHE_DIR
-from .utils.lru_cache import lru_cache
 
 
 @lru_cache()
@@ -136,10 +136,6 @@ def singleton(fn):
 
 _first_cap_re = re.compile('(.)([A-Z][a-z]+)')
 _all_cap_re = re.compile('([a-z0-9])([A-Z])')
-
-
-def force_unicode(text):
-    return text if isinstance(text, unicode) else text.decode('utf8')
 
 
 def split_camel_case(text, sep='_'):

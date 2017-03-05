@@ -1,9 +1,7 @@
-from __future__ import division
 import operator
 import difflib
-from Levenshtein import ratio
-from ulauncher.helpers import force_unicode
-from ulauncher.utils.lru_cache import lru_cache
+from difflib import SequenceMatcher
+from functools import lru_cache
 
 
 @lru_cache(maxsize=150)
@@ -39,7 +37,8 @@ def get_matching_indexes(query, text):
     while i > 0:
         j, c = max(enumerate(counter[i]), key=operator.itemgetter(1))
         if c:
-            map(positions.add, range(j - c, j))
+            for pos in range(j - c, j):
+                positions.add(pos)
             i -= c
         else:
             i -= 1
@@ -47,9 +46,17 @@ def get_matching_indexes(query, text):
     return sorted(positions)
 
 
+sm = SequenceMatcher()
+
+
+def _ratio(s, t):
+    sm.set_seqs(s, t)
+    return sm.quick_ratio()
+
+
 def get_score(query, text):
     """
-    Uses Levenshtein's algorithm + some improvements to the score
+    Uses difflib.SequenceMatcher + some improvements to the score
     Returns number between 0 and 100
     """
     if not query or not text:
@@ -57,7 +64,7 @@ def get_score(query, text):
 
     query = query.lower()
     text = text.lower()
-    score = ratio(force_unicode(query), force_unicode(text)) * 100
+    score = _ratio(query, text) * 100
 
     # increase score if a word from text starts with a query
     for text_part in text.split(' '):
