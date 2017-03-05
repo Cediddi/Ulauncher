@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 
 import os
@@ -17,8 +17,8 @@ def update_config(libdir, values={}):
     filename = os.path.join(libdir, 'ulauncher/config.py')
     oldvalues = {}
     try:
-        fin = file(filename, 'r')
-        fout = file(filename + '.new', 'w')
+        fin = open(filename, 'r')
+        fout = open(filename + '.new', 'w')
 
         for line in fin:
             fields = line.split(' = ')  # Separate variable from value
@@ -31,8 +31,8 @@ def update_config(libdir, values={}):
         fout.close()
         fin.close()
         os.rename(fout.name, fin.name)
-    except (OSError, IOError), e:
-        print ("ERROR: Can't find %s" % filename)
+    except (OSError, IOError) as e:
+        print("ERROR: Can't find %s" % filename)
         sys.exit(1)
     return oldvalues
 
@@ -49,7 +49,7 @@ def move_desktop_file(root, target_data, prefix):
     desktop_file = desktop_path + '/ulauncher.desktop'
 
     if not os.path.exists(old_desktop_file):
-        print ("ERROR: Can't find", old_desktop_file)
+        print("ERROR: Can't find", old_desktop_file)
         sys.exit(1)
     elif target_data != prefix + '/':
         # This is an /opt install, so rename desktop file to use extras-
@@ -59,7 +59,7 @@ def move_desktop_file(root, target_data, prefix):
             os.rename(old_desktop_file, desktop_file)
             os.rmdir(old_desktop_path)
         except OSError as e:
-            print ("ERROR: Can't rename", old_desktop_file, ":", e)
+            print("ERROR: Can't rename", old_desktop_file, ":", e)
             sys.exit(1)
 
     return desktop_file
@@ -68,8 +68,8 @@ def move_desktop_file(root, target_data, prefix):
 def update_desktop_file(filename, target_pkgdata, target_scripts):
 
     try:
-        fin = file(filename, 'r')
-        fout = file(filename + '.new', 'w')
+        fin = open(filename, 'r')
+        fout = open(filename + '.new', 'w')
 
         for line in fin:
             if 'Exec=' in line:
@@ -83,8 +83,8 @@ def update_desktop_file(filename, target_pkgdata, target_scripts):
         fout.close()
         fin.close()
         os.rename(fout.name, fin.name)
-    except (OSError, IOError), e:
-        print ("ERROR: Can't find %s" % filename)
+    except (OSError, IOError) as e:
+        print("ERROR: Can't find %s" % filename)
         sys.exit(1)
 
 

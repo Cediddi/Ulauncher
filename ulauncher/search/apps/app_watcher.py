@@ -48,7 +48,7 @@ class AppNotifyEventHandler(pyinotify.ProcessEvent):
         otherwise .desktop file may not be ready while application is being installed
         """
         while True:
-            for pathname, start_time in self._deferred_files.items():
+            for (pathname, start_time) in list(self._deferred_files.items()):
                 time_passed = time.time() - start_time
                 if time_passed < self.RETRY_TIME_SPAN[0]:
                     # skip this file for now

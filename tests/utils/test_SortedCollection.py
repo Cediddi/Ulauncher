@@ -81,7 +81,6 @@ def test_SortedCollection():
             assert list(sc.copy()) == list(sc)          # test copy()
             sc.clear()                                  # test clear()
             assert len(sc) == 0
-
     sd = SortedCollection('The quick Brown Fox jumped'.split(), key=str.lower)
     assert sd._keys == ['brown', 'fox', 'jumped', 'quick', 'the']
     assert sd._items == ['Brown', 'Fox', 'jumped', 'quick', 'The']
@@ -118,7 +117,3 @@ def test_SortedCollection():
         assert 0, 'Oops, failed to notify of missing value'
     sd.remove('jumped')
     assert list(sd) == ['Brown', 'Fox', 'jUmPeD', 'quick', 'QuIcK', 'The']
-
-    import doctest
-    from operator import itemgetter
-    print(doctest.testmod())

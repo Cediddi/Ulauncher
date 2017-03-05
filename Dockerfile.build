@@ -22,14 +22,13 @@ RUN apt-get update && \
         gir1.2-gdkpixbuf-2.0 \
         gir1.2-appindicator3-0.1 \
         gir1.2-notify-0.7 \
-        python-gi \
-        python-gobject \
-        python-distutils-extra \
-        python-xdg \
-        python-dbus \
-        python-pyinotify \
-        python-pip && \
-    pip install --upgrade pip setuptools && \
+        python3-gi \
+        python3-distutils-extra \
+        python3-xdg \
+        python3-dbus \
+        python3-pyinotify \
+        python3-pip && \
+    pip3 install --upgrade pip setuptools && \
     wget -O /tmp/node-setup.sh https://deb.nodesource.com/setup_6.x && \
     bash /tmp/node-setup.sh && \
     apt-get install -y nodejs && \
@@ -39,7 +38,7 @@ RUN apt-get update && \
 COPY [ "requirements.txt", "data/preferences/package.json", "data/preferences/bower.json", "./" ]
 
 # Caching node_modules and bower_components to make builds faster
-RUN pip install -r requirements.txt && \
+RUN pip3 install -r requirements.txt && \
     npm install && \
     ./node_modules/.bin/bower install -F --allow-root && \
     mv node_modules /var && \

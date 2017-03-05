@@ -2,18 +2,18 @@ Source: ulauncher
 Section: python
 Priority: extra
 Build-Depends: debhelper (>= 8),
- python-all (>= 2.7~),
+ python3 (>= 3.4),
  dh-python,
  gobject-introspection,
- python-distutils-extra (>= 2.10)
+ python3-distutils-extra
 Maintainer: Aleksandr Gornostal <ulauncher.app@gmail.com>
 Standards-Version: 3.9.5
-X-Python-Version: >= 2.7
+X-Python3-Version: >= 3.4
 
 Package: ulauncher
 Architecture: all
 Depends: ${misc:Depends},
- ${python:Depends},
+ ${python3:Depends},
  libkeybinder-3.0-0,
  libgtk-3-0 (>= 3.10),
  gir1.2-gtk-3.0,
@@ -22,8 +22,8 @@ Depends: ${misc:Depends},
  gir1.2-glib-2.0,
  gir1.2-gdkpixbuf-2.0,
  gir1.2-appindicator3-0.1,
- python-dbus,
- python-pyinotify,
- python-xdg
-Description: Provides a convenient and fast way to launch your desktop applications
+ python3-dbus,
+ python3-pyinotify,
+ python3-xdg
+Description: Application launcher for Linux
  See http://ulauncher.io for more information
