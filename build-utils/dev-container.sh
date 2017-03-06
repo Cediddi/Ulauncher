@@ -13,5 +13,5 @@ docker run \
     -it \
     -v $(pwd):/root/ulauncher \
     -v $HOME/.bash_history:/root/.bash_history \
-    $BUILD_IMAGE \
+    $RPM_BUILD_IMAGE \
     bash
