@@ -1,0 +1,16 @@
+FROM opensuse:42.2
+
+MAINTAINER ulauncher.app@gmail.com
+
+WORKDIR /root/ulauncher
+
+RUN zypper install -y \
+        gcc \
+        make \
+        rpm-build \
+        python3-devel \
+        rsync \
+        intltool \
+        python3-distutils-extra \
+        python3-setuptools
+

@@ -16,5 +16,8 @@ docker push $BUILD_IMAGE
 docker build -f Dockerfile.build-rpm -t $RPM_BUILD_IMAGE .
 docker push $RPM_BUILD_IMAGE
 
+docker build -f Dockerfile.build-suse-rpm -t $SUSE_RPM_BUILD_IMAGE .
+docker push $SUSE_RPM_BUILD_IMAGE
+
 docker build -f Dockerfile.build-arch -t $ARCH_BUILD_IMAGE .
 docker push $ARCH_BUILD_IMAGE
