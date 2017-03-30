@@ -3,7 +3,7 @@ import sys
 from json import load
 from ulauncher.api.event import EventListener, PreferencesUpdateEvent
 from ulauncher.api.preferences import Config
-from ulauncher.extension.Connector import Connector
+from ulauncher.extension.communication.Client import Client
 
 
 class Extension(object):
@@ -14,8 +14,8 @@ class Extension(object):
     def __init__(self):
         self.listeners = []
 
-    def on_connect(self, preferences):
-        self.subscribe(PreferencesUpdateEvent, PreferencesUpdateListener(preferences))
+    def on_connect(self):
+        self.subscribe(PreferencesUpdateEvent, PreferencesUpdateListener(self))
         self.subscribe(PreferencesEvent, PreferencesListener(self))
 
     def subscribe(self, event_class, listener):
@@ -41,11 +41,11 @@ class Extension(object):
 
 class PreferencesUpdateListener(EventListener):
 
-    def __init__(self, preferences):
-        self.preferences = preferences
+    def __init__(self, extension):
+        self.extension = extension
 
     def on_event(self, event):
-        self.preferences[event.get_key()] = event.get_new_value()
+        self.extension.preferences[event.key] = event.new_value
 
 
 class PreferencesListener(EventListener):
@@ -54,9 +54,8 @@ class PreferencesListener(EventListener):
         self.extension = extension
 
     def on_event(self, event):
-        self.extension.preferences = event.get_preferences()
+        self.extension.preferences = event.preferences
 
 
 def run(extension):
-    # TODO: review init process
-    Connector(extension).connect()
+    Client(extension).connect()

@@ -6,6 +6,11 @@ class SearchMode(object):
         """
         return False
 
+    def on_query_change(self, query):
+        """
+        Triggered when user changes a search query
+        """
+
     def on_key_press_event(self, widget, event, query):
         """
         @param widget Gdk.Widget

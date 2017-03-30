@@ -1,7 +1,7 @@
 import pytest
 import mock
 from ulauncher.ext.SearchMode import SearchMode
-from ulauncher.search import Search
+from ulauncher.search.Search import Search
 
 
 class TestSearch:
@@ -24,8 +24,8 @@ class TestSearch:
         another_mode.is_enabled.return_value = True
         assert search.choose_search_mode('q') == another_mode
 
-    def test_start(self, search, another_mode):
-        search.start('q')
+    def test_on_query_change(self, search, another_mode):
+        search.on_query_change('q')
         another_mode.on_query.assert_called_with('q')
         another_mode.on_query.return_value.run_all.assert_called_with()
 

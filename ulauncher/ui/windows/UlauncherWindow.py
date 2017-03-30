@@ -22,7 +22,7 @@ from ulauncher.ui.ResultItemWidget import ResultItemWidget
 from ulauncher.ui.SmallResultItemWidget import SmallResultItemWidget
 
 from ulauncher.ui.ItemNavigation import ItemNavigation
-from ulauncher.search import Search
+from ulauncher.search.Search import Search
 from ulauncher.search.apps.AppStatDb import AppStatDb
 from ulauncher.search.apps.app_watcher import start as start_app_watcher
 from ulauncher.utils.Settings import Settings
@@ -142,7 +142,7 @@ class UlauncherWindow(Gtk.Window, WindowHelper):
         """
         Triggered by user input
         """
-        Search.get_instance().start(self.get_user_query())
+        Search.get_instance().on_query_change(self.get_user_query())
 
     def on_input_key_press_event(self, widget, event):
         keyval = event.get_keyval()

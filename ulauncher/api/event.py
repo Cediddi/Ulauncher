@@ -26,25 +26,19 @@ class KeywordQueryEvent(BaseEvent):
 
 class PreferencesUpdateEvent(BaseEvent):
 
+    key = None
+    old_value = None
+    new_value = None
+
     def __init__(self, key, old_value, new_value):
         self.key = key
         self.old_value = old_value
         self.new_value = new_value
 
-    def get_key(self):
-        return self.key
-
-    def get_old_value(self):
-        return self.old_value
-
-    def get_new_value(self):
-        return self.new_value
-
 
 class PreferencesEvent(BaseEvent):
 
+    preferences = None
+
     def __init__(self, preferences):
         self.preferences = preferences
-
-    def get_preferences(self):
-        return self.preferences
