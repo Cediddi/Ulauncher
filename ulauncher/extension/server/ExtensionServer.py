@@ -6,7 +6,7 @@ from .ExtensionController import ExtensionController
 from .ExtensionRequestHandler import ExtensionRequestHandler
 
 
-class Server(object):
+class ExtensionServer(object):
 
     def __init__(self, ws_port):
         self.controllers = []
